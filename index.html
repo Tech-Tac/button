@@ -125,12 +125,15 @@
         }
       }
       function addButton() {
-        const newButton = document.createElement("button");
-        newButton.className = "button";
-        newButton.style.left = Math.random() * innerWidth + "px";
-        newButton.style.top = Math.random() * innerHeight + "px";
-        newButton.textContent = phrases[Math.floor(Math.random() * phrases.length)];
-        buttonContainer.appendChild(newButton);
+        if (score > 0) {
+          const newButton = document.createElement("button");
+          newButton.className = "button";
+          newButton.style.left = Math.random() * innerWidth + "px";
+          newButton.style.top = Math.random() * innerHeight + "px";
+          newButton.textContent = phrases[Math.floor(Math.random() * phrases.length)];
+          newButton.addEventListener("click", click);
+          buttonContainer.appendChild(newButton);
+        }
         setTimeout(addButton, Math.random() * 5000 + 5000);
       }
       setTimeout(addButton, 5000);
