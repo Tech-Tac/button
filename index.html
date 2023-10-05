@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Button</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        overflow: hidden;
+        user-select: none;
+        height: 100vh;
+        background-color: #222;
+        background-image: radial-gradient(transparent, #0003);
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+      .button {
+        position: absolute;
+        left: 50vw;
+        top: 50vh;
+        transform: translate(-50%, -50%);
+        font-size: 1.25rem;
+        width: 5em;
+        height: 3em;
+        padding: 0;
+      }
+      #score {
+        position: absolute;
+        transform: translate(-50%, -50%);
+        margin: 0;
+        left: 50vw;
+        top: 50vh;
+        font-size: 25vmin;
+        text-align: center;
+        pointer-events: none;
+        color: #8888;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="score" style="display: none">0</h1>
+    <button class="button">Click me!</button>
+    <script>
+      const scoreText = document.getElementById("score");
+      const buttons = document.getElementsByClassName("button");
+      const phrases = [
+        "Click me!",
+        "Click",
+        "sup?",
+        "Ouch!",
+        "Ow!",
+        "Stop!",
+        "Button",
+        "I'm a button",
+        "Clickity",
+        "Tap",
+        "Touch Me!",
+        "Subscribe",
+        "That hurts!",
+        ":-(",
+        ":'(",
+        "Why?",
+        "No.",
+        "Done",
+        "Cancel",
+        "Exit",
+        "Butt",
+        "On",
+        "Off",
+        "Don't click",
+        "Click clock",
+        "Not a cookie!",
+        "Leave me alone!",
+        "Don't",
+      ];
+      let thresholdDistance = 24;
+      let moveSpeed = 2;
+      let score = 0;
+      function distance(x1, y1, x2, y2) {
+        return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+      }
+      function angle(x1, y1, x2, y2) {
+        return Math.atan2(y2 - y1, x2 - x1);
+      }
+      function moveButtons(e) {
+        if (score > 0) {
+          for (const button of buttons) {
+            const rect = button.getBoundingClientRect();
+            const dist = distance(e.clientX, e.clientY, rect.left + rect.width / 2, rect.top + rect.height / 2);
+            if (dist <= thresholdDistance) {
+              const rads = angle(e.clientX, e.clientY, rect.left + rect.width / 2, rect.top + rect.height / 2);
+              let left = rect.left + rect.width / 2 + Math.cos(rads) * (thresholdDistance / dist) * moveSpeed;
+              let top = rect.top + rect.height / 2 + Math.sin(rads) * (thresholdDistance / dist) * moveSpeed;
+              if (left - rect.width / 2 > innerWidth) {
+                left = rect.width;
+              } else if (left + rect.width / 2 < 0) {
+                left = innerWidth - rect.width;
+              }
+              if (top - rect.height / 2 > innerHeight) {
+                top = rect.height;
+              } else if (top + rect.height / 2 < 0) {
+                top = innerHeight - rect.height;
+              }
+              button.style.left = left + "px";
+              button.style.top = top + "px";
+            }
+          }
+        }
+      }
+      function click(e) {
+        if (e.detail) {
+          score++;
+          scoreText.textContent = score;
+          scoreText.style.display = "block";
+          thresholdDistance += 0.5;
+          moveSpeed += 0.05;
+          e.target.style.left = Math.random() * innerWidth + "px";
+          e.target.style.top = Math.random() * innerHeight + "px";
+          e.target.textContent = phrases[Math.floor(Math.random() * phrases.length)];
+        }
+      }
+      document.addEventListener("pointermove", moveButtons);
+      document.addEventListener("pointerup", moveButtons);
+      for (const button of buttons) {
+        button.addEventListener("click", click);
+      }
+    </script>
+  </body>
+</html>
