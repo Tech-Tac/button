@@ -41,9 +41,12 @@
   </head>
   <body>
     <h1 id="score" style="display: none">0</h1>
-    <button class="button">Click me!</button>
+    <div id="buttons">
+      <button class="button">Click me!</button>
+    </div>
     <script>
       const scoreText = document.getElementById("score");
+      const buttonContainer = document.getElementById("buttons");
       const buttons = document.getElementsByClassName("button");
       const phrases = [
         "Click me!",
@@ -121,6 +124,16 @@
           e.target.textContent = phrases[Math.floor(Math.random() * phrases.length)];
         }
       }
+      function addButton() {
+        const newButton = document.createElement("button");
+        newButton.className = "button";
+        newButton.style.left = Math.random() * innerWidth + "px";
+        newButton.style.top = Math.random() * innerHeight + "px";
+        newButton.textContent = phrases[Math.floor(Math.random() * phrases.length)];
+        buttonContainer.appendChild(newButton);
+        setTimeout(addButton, Math.random() * 5000 + 5000);
+      }
+      setTimeout(addButton, 5000);
       document.addEventListener("pointermove", moveButtons);
       document.addEventListener("pointerup", moveButtons);
       for (const button of buttons) {
