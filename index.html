@@ -15,6 +15,7 @@
         background-position: center;
         background-size: cover;
         background-repeat: no-repeat;
+        touch-action: none;
       }
       #score {
         position: absolute;
@@ -199,7 +200,25 @@
       }
       function activatePowerUp(e) {
         e.target.remove();
-        score += 10;
+        const powers = ["bonus", "slow_buttons", "fast_buttons", "more_buttons", "less_buttons"];
+        const choice = Math.floor(Math.random() * powers.length);
+        if (choice === "bonus") {
+          score += Math.round(Math.random() * 5 + 20);
+        } else if (choice === "slow_buttons") {
+          moveSpeed *= 0.5;
+        } else if (choice === "fast_buttons") {
+          moveSpeed *= 2;
+        } else if (choice === "more_buttons") {
+          for (let i = 0; i < Math.random() * 5 + 5; i++) {
+            addButton();
+          }
+        } else if (choice === "less_buttons") {
+          for (const button of buttons) {
+            if (Math.random() > 0.75 && buttons.length > 1) {
+              button.remove();
+            }
+          }
+        }
       }
       function spawnPowerUp() {
         if (score > 0) {
