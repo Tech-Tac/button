@@ -16,16 +16,6 @@
         background-size: cover;
         background-repeat: no-repeat;
       }
-      .button {
-        position: absolute;
-        left: 50vw;
-        top: 50vh;
-        transform: translate(-50%, -50%);
-        font-size: 1.25rem;
-        width: 5em;
-        height: 3em;
-        padding: 0;
-      }
       #score {
         position: absolute;
         transform: translate(-50%, -50%);
@@ -37,6 +27,75 @@
         pointer-events: none;
         color: #8888;
       }
+      .button {
+        position: absolute;
+        left: 50vw;
+        top: 50vh;
+        transform: translate(-50%, -50%);
+        font-size: 1.25rem;
+        width: 5em;
+        height: 3em;
+        padding: 0;
+      }
+      .powerup {
+        position: absolute;
+        appearance: none;
+        transform: translate(-50%, -50%);
+        left: 50vw;
+        top: 50vh;
+        border-radius: 50%;
+        font-size: 1.25rem;
+        font-weight: bold;
+        width: 3em;
+        height: 3em;
+        background-color: #0f0;
+        border: none;
+        color: #000;
+        cursor: pointer;
+        box-shadow: 0 0 0px 8px #fff8;
+        animation: glow 0.75s linear infinite, rainbow 8s linear infinite;
+        transition: opacity 200ms;
+      }
+      @keyframes glow {
+        0% {
+          box-shadow: 0 0 0px 0px #0000;
+        }
+        50% {
+          box-shadow: 0 0 1px 5px #ff0;
+        }
+        100% {
+          box-shadow: 0 0 2px 10px #0000;
+        }
+      }
+      @keyframes rainbow {
+        0% {
+          background-color: red;
+        }
+        12.5% {
+          background-color: orange;
+        }
+        25% {
+          background-color: yellow;
+        }
+        37.5% {
+          background-color: lime;
+        }
+        50% {
+          background-color: green;
+        }
+        62.5% {
+          background-color: cyan;
+        }
+        75% {
+          background-color: #80f;
+        }
+        87.5% {
+          background-color: magenta;
+        }
+        100% {
+          background-color: red;
+        }
+      }
     </style>
   </head>
   <body>
@@ -44,9 +103,11 @@
     <div id="buttons">
       <button class="button">Click me!</button>
     </div>
+    <div id="powerups"></div>
     <script>
       const scoreText = document.getElementById("score");
       const buttonContainer = document.getElementById("buttons");
+      const powerUpContainer = document.getElementById("powerups");
       const buttons = document.getElementsByClassName("button");
       const phrases = [
         "Click me!",
@@ -134,9 +195,33 @@
           newButton.addEventListener("click", click);
           buttonContainer.appendChild(newButton);
         }
-        setTimeout(addButton, Math.random() * 5000 + 5000);
+        setTimeout(addButton, Math.random() * 10000 + 10000);
       }
-      setTimeout(addButton, 5000);
+      function activatePowerUp(e) {
+        e.target.remove();
+        score += 10;
+      }
+      function spawnPowerUp() {
+        if (score > 0) {
+          const newPowerUp = document.createElement("button");
+          newPowerUp.className = "powerup";
+          newPowerUp.style.left = Math.random() * innerWidth + "px";
+          newPowerUp.style.top = Math.random() * innerHeight + "px";
+          newPowerUp.textContent = "?";
+          newPowerUp.addEventListener("click", activatePowerUp);
+          newPowerUp.style.animationDelay = Math.random() * -10 + "s";
+          powerUpContainer.appendChild(newPowerUp);
+          setTimeout(function () {
+            newPowerUp.style.opacity = 0;
+            setTimeout(function () {
+              newPowerUp.remove();
+            }, 200);
+          }, 1000);
+        }
+        setTimeout(spawnPowerUp, Math.random() * 10000 + 10000);
+      }
+      setTimeout(addButton, 20000);
+      setTimeout(spawnPowerUp, 10000);
       document.addEventListener("pointermove", moveButtons);
       document.addEventListener("pointerup", moveButtons);
       for (const button of buttons) {
