@@ -198,7 +198,7 @@
         }
       }
       function addButton() {
-        if (score > 0) {
+        if (score > 0 && buttons.length < 1024) {
           const newButton = document.createElement("button");
           newButton.className = "button";
           newButton.style.left = Math.random() * innerWidth + "px";
