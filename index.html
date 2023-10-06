@@ -201,7 +201,7 @@
       function activatePowerUp(e) {
         e.target.remove();
         const powers = ["bonus", "slow_buttons", "fast_buttons", "more_buttons", "less_buttons"];
-        const choice = Math.floor(Math.random() * powers.length);
+        const choice = powers[Math.floor(Math.random() * powers.length)];
         if (choice === "bonus") {
           score += Math.round(Math.random() * 5 + 20);
         } else if (choice === "slow_buttons") {
