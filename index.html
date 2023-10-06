@@ -140,8 +140,8 @@
         "Leave me alone!",
         "Don't",
       ];
-      let thresholdDistance = 24;
-      let moveSpeed = 2;
+      let thresholdDistance = 16;
+      let moveSpeed = 1;
       let score = 0;
       function distance(x1, y1, x2, y2) {
         return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
@@ -179,8 +179,8 @@
           score++;
           scoreText.textContent = score;
           scoreText.style.display = "block";
-          thresholdDistance += 0.5;
-          moveSpeed += 0.05;
+          thresholdDistance += 0.25;
+          moveSpeed += 0.025;
           e.target.style.left = Math.random() * innerWidth + "px";
           e.target.style.top = Math.random() * innerHeight + "px";
           e.target.textContent = phrases[Math.floor(Math.random() * phrases.length)];
