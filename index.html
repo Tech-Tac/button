@@ -139,6 +139,17 @@
         "Not a cookie!",
         "Leave me alone!",
         "Don't",
+        "Oof!",
+        "Bruh",
+        "Sus",
+        "-_-",
+        "O.O",
+        "T-T",
+        "o.o",
+        ":^)",
+        "Frosted is bald",
+        "Tech-Tac is the best",
+        "WTH?",
       ];
       let thresholdDistance = 16;
       let moveSpeed = 1;
@@ -200,11 +211,12 @@
       }
       function activatePowerUp(e) {
         e.target.remove();
-        const powers = ["bonus", "slow_buttons", "fast_buttons", "more_buttons", "less_buttons"];
+        const powers = ["bonus", "slow_buttons", "fast_buttons", "more_buttons", "less_buttons", "magnet", "repel"];
         const choice = powers[Math.floor(Math.random() * powers.length)];
         alert(choice);
         if (choice === "bonus") {
           score += Math.round(Math.random() * 5 + 20);
+          scoreText.textContent = score;
         } else if (choice === "slow_buttons") {
           moveSpeed *= 0.5;
         } else if (choice === "fast_buttons") {
@@ -219,6 +231,10 @@
               button.remove();
             }
           }
+        } else if (choice === "magnet" && moveSpeed > 0) {
+          moveSpeed *= -1;
+        } else if (choice === "repel" && moveSpeed < 0) {
+          moveSpeed *= -1;
         }
       }
       function spawnPowerUp() {
